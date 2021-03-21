@@ -2,16 +2,53 @@ import sys
 sys.path.append("E:\\my_python\\pythonprojects\\PyBox")
 
 from Physics.integrator import *
+from datetime import datetime
+from time import time
 import pygame as pyg
 
 
 mainloop = True
-logging = False
+show_vectors_log = True
 
-if logging:
+if show_vectors_log:
     print("\nENTER INFO AS A TUPLE\n")
     user_input1 = input("Which vector should be visisble?(Pos, Vel, Acc):- ")
     user_input2 = input("Do you want to log position, velocity and acceleration to the console?(Y/N):- ").upper()
+    user_input3 = input("Do you want to enable the coordinate axes on screen?(Y/N):- ").upper()
+
+
+def disp_vec_log():
+    if user_input1 == "(Pos)":
+        display_Pos(circ, win)
+
+    if user_input1 == "(Vel)":
+        display_Vel(circ, win)
+
+    if user_input1 == "(Acc)":
+        display_Acc(circ, win)
+
+    if user_input1 == "(Pos, Vel)":
+        display_Pos(circ, win)
+        display_Vel(circ, win)
+
+    if user_input1 == "(Pos, Acc)":
+        display_Pos(circ, win)
+        display_Acc(circ, win)
+
+    if user_input1 == "(Vel, Acc)":
+        display_Vel(circ, win)
+        display_Acc(circ, win)
+    
+    if user_input1 == "(Pos, Vel, Acc)":
+        display_Pos(circ, win)
+        display_Vel(circ, win)
+        display_Acc(circ, win)
+
+    if user_input2 == "Y":
+        print("position:", (round(circ.Pos.x), round(circ.Pos.y)), "velocity:",
+              (round(circ.Vel.x), round(circ.Vel.y)), "Acceleration:", (round(circ.Acc.x), round(circ.Acc.y)),
+              end=" (" + str(datetime.now().time()) + ")\n")
+
 
 pyg.init()
 win = pyg.display.set_mode(display_size)
@@ -27,8 +64,10 @@ circ = Circle(5, (1, 0), (0, 0), (0, 0), 0, 0, 0, (20, 20, 200), 50)
 
 def draw():
     draw_circle(circ, win)
-
     pyg.draw.rect(win, (100, 50, 0), (0, 890, 1500, 10))  # floor
+    
+    if user_input3 == "Y":
+        coordinate_axes(win)
 
 
 def main():
@@ -56,45 +95,14 @@ def main():
         # ___gravity___
 
         # ___friction___
-        # friction(circ, 1)
+        friction(circ, 1)
 
         # ___object animation___
         draw()
 
         # ___logging___
-        if logging:
-            if user_input1 == "(Pos)":
-                display_Pos(circ, win)
-                # display_Pos(circ_2)
-            if user_input1 == "(Vel)":
-                display_Vel(circ, win)
-                # display_Vel(circ_2)
-
-            if user_input1 == "(Acc)":
-                display_Acc(circ, win)
-                # display_Acc(circ_2)
-            if user_input1 == "(Pos, Vel)":
-                display_Pos(circ, win)
-                display_Vel(circ, win)
-
-                # display_Pos(circ_2)
-                # display_Vel(circ_2)
-            if user_input1 == "(Pos, Acc)":
-                display_Pos(circ, win)
-                display_Acc(circ, win)
-
-                # display_Pos(circ_2)
-                # display_Acc(circ_2)
-            if user_input1 == "(Vel, Acc)":
-                display_Vel(circ, win)
-                display_Acc(circ, win)
-
-                # display_Vel(circ_2)
-                # display_Acc(circ_2)
-            if user_input2 == "Y":
-                print("position:", (round(circ.Pos.x), round(circ.Pos.y)), "velocity:",
-                      (round(circ.Vel.x), round(circ.Vel.y)), "Acceleration:", (round(circ.Acc.x), round(circ.Acc.y)),
-                      end=" (" + str(datetime.now().time()) + ")\n")
+        if show_vectors_log:
+            disp_vec_log()
 
         pyg.display.update()
 

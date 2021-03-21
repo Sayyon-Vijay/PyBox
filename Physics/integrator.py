@@ -65,8 +65,8 @@ def movement(obj, up, down, left, right, extra):
             obj.F_move.y = -Fm.y
 
         if keys[extra]:
-            obj.Vel.y = 8500
-            obj.Vel.x = 8000
+            obj.Vel.y = 4500
+            obj.Vel.x = 3000
 
         resultant_Force = obj.Fg + obj.F_move + obj.F_g + F_drag + F_external  # getting the resultant force
 
@@ -121,13 +121,9 @@ def rect_boundary(obj):
         obj.Vel.y = 0
 
 
-# -1 * coeff_fric * object_.mass * g
 # The function that handles friction for individual objects
 def friction(obj, center):
-    obj.Acc.x = 0
-    obj.Acc.y = 0
-
-    F_friction = Vector(-1 * coeff_fric * obj.mass * g, 0)
+    F_friction.x = -1 * coeff_fric * obj.mass * g
 
     if isinstance(obj, Circle):
         if obj.Pos.y <= -390:
@@ -150,8 +146,9 @@ def friction(obj, center):
                     if obj.Vel.x > 0:
                         obj.Vel.x = 0
                         obj.Acc.x = 0
-            else:
+            elif obj.F_move.x > 0:
                 obj.F_move -= F_friction
+
     else:
         if obj.Pos.y <= -450 + ground_height + center:
             if obj.Acc.x == 0:
@@ -173,7 +170,7 @@ def friction(obj, center):
                     if obj.Vel.x > 0:
                         obj.Vel.x = 0
                         obj.Acc.x = 0
-            else:
+            elif obj.F_move.x > 0:
                 obj.F_move -= F_friction
 
 

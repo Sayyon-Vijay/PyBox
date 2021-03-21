@@ -61,7 +61,7 @@ def transform_y(y):
     return round(450 - y)
 
 
-def coordinate_sys(win):
+def coordinate_axes(win):
     draw.line(win, (100, 255, 100), (0, 450), (1500, 450))
     draw.line(win, (100, 255, 100), (750, 0), (750, 900))
 
@@ -71,21 +71,22 @@ def display_Pos(obj, win):
 
 
 def display_Vel(obj, win):
-    obj.Vel = (4 * obj.Vel + obj.Pos)
+    obj.Vel = ((1/20) * obj.Vel + obj.Pos)
 
     draw.line(win, (10, 255, 10), (transform_x(obj.Pos.x), transform_y(obj.Pos.y)),
                   (transform_x(obj.Vel.x), transform_y(obj.Vel.y)))
 
-    obj.Vel = 0.25 * (obj.Vel - obj.Pos)
+    obj.Vel = 20 * (obj.Vel - obj.Pos)
 
 
 def display_Acc(obj, win):
-    obj.Acc = (100 * obj.Acc + obj.Pos)
+    # print(obj.Acc.x)
+    obj.Acc = ((1/60) * obj.Acc + obj.Pos)
 
-    draw.line(win, (10, 10, 255), (transform_x(obj.Acc.x), transform_y(obj.Acc.y)),
+    draw.line(win, (10, 10, 255), (transform_x(obj.Pos.x), transform_y(obj.Pos.y)),
                   (transform_x(obj.Acc.x), transform_y(obj.Acc.y)))
-
-    obj.Acc = 0.01 * (obj.Acc - obj.Pos)
+    
+    obj.Acc = 60 * (obj.Acc - obj.Pos)
 
 
 def circrot_coords1(obj):

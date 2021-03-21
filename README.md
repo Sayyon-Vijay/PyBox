@@ -1,7 +1,6 @@
 # PyBox
 A 2D physics engine library in python for your games and for educational purposes etc. Rendered using pygame
 
-&nbsp
 
 features:
 
@@ -17,6 +16,10 @@ gravity between objects
 
 n-body simulation
 
-&nbsp
 
 note: many of the feature haven't been added....yet
+
+The action of every agent <br />
+  into the world <br />
+starts <br />
+  from their physical selves. <br />

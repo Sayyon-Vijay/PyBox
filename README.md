@@ -13,3 +13,5 @@ n-body simulation
 
 note: many of the features haven't been added....yet
 
+and there are a lot of bugs
+

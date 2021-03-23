@@ -1,5 +1,6 @@
 from math import atan, pi, cos, sin
 from pygame import draw
+from itertools import combinations
 
 mesh_color = (100, 200, 100)
 
@@ -125,3 +126,11 @@ def rect_mesh(obj, win):
     draw.line(win, mesh_color, (transform_x(obj.Pos.x) + obj.width, transform_y(obj.Pos.y) + obj.height), (transform_x(obj.Pos.x) + obj.width, transform_y(obj.Pos.y)), width=1)
 
     draw.line(win, mesh_color, (transform_x(obj.Pos.x) + obj.width, transform_y(obj.Pos.y)), (transform_x(obj.Pos.x), transform_y(obj.Pos.y)), width=1)
+
+
+def PairObjectList(objects):
+    n = []
+    for i in combinations(objects, 2):
+        n.append(i)
+    
+    return n

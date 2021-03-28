@@ -22,34 +22,34 @@ if show_vectors_log:
 
 def disp_vec_log():
     if user_input1 == "(Pos)":
-        display_Pos(circ1, win)
+        display_Pos(circ, win)
 
     if user_input1 == "(Vel)":
-        display_Vel(circ1, win)
+        display_Vel(circ, win)
 
     if user_input1 == "(Acc)":
-        display_Acc(circ1, win)
+        display_Acc(circ, win)
 
     if user_input1 == "(Pos, Vel)":
-        display_Pos(circ1, win)
-        display_Vel(circ1, win)
+        display_Pos(circ, win)
+        display_Vel(circ, win)
 
     if user_input1 == "(Pos, Acc)":
-        display_Pos(circ1, win)
-        display_Acc(circ1, win)
+        display_Pos(circ, win)
+        display_Acc(circ, win)
 
     if user_input1 == "(Vel, Acc)":
-        display_Vel(circ1, win)
-        display_Acc(circ1, win)
+        display_Vel(circ, win)
+        display_Acc(circ, win)
     
     if user_input1 == "(Pos, Vel, Acc)":
-        display_Pos(circ1, win)
-        display_Vel(circ1, win)
-        display_Acc(circ1, win)
+        display_Pos(circ, win)
+        display_Vel(circ, win)
+        display_Acc(circ, win)
 
     if user_input2 == "Y":
-        print("position:", (round(circ1.Pos.x), round(circ1.Pos.y)), "velocity:",
-              (round(circ1.Vel.x), round(circ1.Vel.y)), "Acceleration:", (round(circ1.Acc.x), round(circ1.Acc.y)),
+        print("position:", (round(circ.Pos.x), round(circ.Pos.y)), "velocity:",
+              (round(circ.Vel.x), round(circ.Vel.y)), "Acceleration:", (round(circ.Acc.x), round(circ.Acc.y)),
               end=" (" + str(datetime.now().time()) + ")\n")
 
 
@@ -61,8 +61,8 @@ pyg.display.set_caption("PyBox")
 
 # __objects__
 # collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color, radius
-circ1 = Circle(True, False, 5, (0, 0), (0, 0), (0, 0), 0, 0, 0, (200, 20, 20), 20)
-circ2 = Circle(True, False, 5, (1450, 0), (0, 0), (0, 0), 0, 0, 0, (20, 20, 200), 20)
+circ1 = Circle(True, False, 5, (0, 0), (0, 0), (0, 0), 0, 0, 0, (200, 20, 20), 50)
+circ2 = Circle(True, False, 5, (1450, 0), (0, 0), (0, 0), 0, 0, 0, (20, 20, 200), 50)
 
 
 def draw():
@@ -92,22 +92,20 @@ def main():
         # print((circ.Pos.x, circ.Pos.y))
 
         win.fill((0, 0, 0))
-        
-        # ___rotation___
 
+        # ___rotation___
 
         # ___boundaries___
         boundary(circ1)
         boundary(circ2)
 
         # ___collisions___
-        circ_collision(Objects.object_list)
+        circ_collision(list1)
 
         # ___gravity___
         gravity(list1)
 
         # ___friction___
-
 
         # ___object animation___
         draw()
@@ -124,5 +122,3 @@ def main():
 # this (__name__) line of code is useful because now people can use this physics engine for making games or something
 if __name__ == "__main__":
     main()
-
-

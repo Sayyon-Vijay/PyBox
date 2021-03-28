@@ -3,7 +3,7 @@ from pygame import key
 import sys
 sys.path.append("E:\\my_python\\pythonprojects\\PyBox\\Physics")
 
-from constants import *
+from Physics.constants import *
 # from extras.funcs import angle, neg, transform_x, transform_y
 
 
@@ -68,7 +68,7 @@ def movement(obj, up, down, left, right, extra):
             obj.Vel.y = 4500 * 0
             obj.Vel.x = 3000 * 0
 
-        resultant_Force = obj.Fg + obj.F_move + obj.F_g + F_drag + F_external  # getting the resultant force
+        resultant_Force = obj.Fg + obj.F_move + obj.F_g + F_drag + obj.F_external  # getting the resultant force
 
         obj.Acc = resultant_Force * (1 / obj.mass)  # getting acceleration from force
 
@@ -194,55 +194,63 @@ def circle_rotation(obj, clock, counter):
 
 # function that handles the collision between circles
 def circ_collision(objects):
-    for i in objects:
-        if i[0].collision and i[1].collision:
-            radius1 = i[0].radius
-            radius2 = i[1].radius
 
-            distance = (i[0].Pos - i[1].Pos).mag()
-            # print(distance)
+    # Broad phase collision detection
+    list1 = active(objects)
 
-            i[0].inside = i[1].inside = False
+    # Narrow phase collision detection
+    for i in list1:
+        if list1.index(i) != len(list1) - 1:
+            obj2 = list1[list1.index(i) + 1][2]
 
-            if distance < i[0].radius + i[1].radius:
-                i[0].inside = i[1].inside = True
+            if i[2].collision and obj2.collision:
+                radius1 = i[2].radius
+                radius2 = obj2.radius
 
-                # __moving the circles__
-                i[0].Pos = i[1].Pos + (i[0].Pos - i[1].Pos).unit_vec() * (radius1 + radius2)
-                i[1].Pos = i[0].Pos + (i[1].Pos - i[0].Pos).unit_vec() * (radius1 + radius2)
+                distance = (i[2].Pos - obj2.Pos).mag()
 
-                # __handling collision__
-                if i[0].Vel.x != 0:
-                    Vel1_angle = neg(atan(i[0].Vel.y / i[0].Vel.x) * (180/pi))
-                else:
-                    Vel1_angle = 90
-                if i[1].Vel.x != 0:
-                    Vel2_angle = neg(atan(i[1].Vel.y / i[1].Vel.x) * (180/pi))
-                else:
-                    Vel2_angle = 90
+                i[2].inside = obj2.inside = False
 
-                line_angle = angle(i[0], i[1])
+                if distance < i[2].radius + obj2.radius:
+                    i[2].inside = obj2.inside = True
 
-                theta1 = abs(line_angle - Vel1_angle)
-                theta2 = abs(line_angle - Vel2_angle)
+                    # __moving the circles__
+                    i[2].Pos = obj2.Pos + (i[2].Pos - obj2.Pos).unit_vec() * (radius1 + radius2)
+                    obj2.Pos = i[2].Pos + (obj2.Pos - i[2].Pos).unit_vec() * (radius1 + radius2)
 
-                extra_component1 = i[0].Vel * sin(theta1)
-                extra_component2 = i[1].Vel * sin(theta2)
+                    # __handling collision__
+                    if i[2].Vel.x != 0:
+                        Vel1_angle = neg(atan(i[2].Vel.y / i[2].Vel.x) * (180/pi))
+                    else:
+                        Vel1_angle = 90
+                    if obj2.Vel.x != 0:
+                        Vel2_angle = neg(atan(obj2.Vel.y / obj2.Vel.x) * (180/pi))
+                    else:
+                        Vel2_angle = 90
 
-                u1 = i[0].Vel * cos(theta1)  # component of the velocity vector of circle 1 along the line
-                u2 = i[1].Vel * cos(theta2)  # component of the velocity vector of circle 2 along the line
+                    line_angle = angle(i[2], obj2)
 
-                m1 = i[0].mass
-                m2 = i[1].mass
+                    theta1 = abs(line_angle - Vel1_angle)
+                    theta2 = abs(line_angle - Vel2_angle)
 
-                # component of the velocity vector of circle 1 along the line after collision
-                v1 = (u1*(m1 - e*m2) / (m1 + m2)) + (u2*m2*(1 + e)/(m1 + m2))
+                    extra_component1 = i[2].Vel * sin(theta1)
+                    extra_component2 = obj2.Vel * sin(theta2)
 
-                # component of the velocity vector of circle 2 along the line after collision
-                v2 = (u1*m1*(1 + e) / (m1 + m2)) + (u2*(m2 - m1*e) / (m1 + m2))
+                    u1 = i[2].Vel * cos(theta1)  # component of the velocity vector of circle 1 along the line
+                    u2 = obj2.Vel * cos(theta2)  # component of the velocity vector of circle 2 along the line
 
-                i[0].Vel = v1 + extra_component1
-                i[1].Vel = v2 + extra_component2
+                    m1 = i[2].mass
+                    m2 = obj2.mass
+
+                    # component of the velocity vector of circle 1 along the line after collision
+                    v1 = (u1*(m1 - e*m2) / (m1 + m2)) + (u2*m2*(1 + e)/(m1 + m2))
+
+                    # component of the velocity vector of circle 2 along the line after collision
+                    v2 = (u1*m1*(1 + e) / (m1 + m2)) + (u2*(m2 - m1*e) / (m1 + m2))
+
+                    i[2].Vel = v1 + extra_component1
+                    obj2.Vel = v2 + extra_component2
+
 
 
 # function that handles collison between 2 rectangles

@@ -66,6 +66,7 @@ class Objects:
         self.F_move = Vector(0, 0)
         self.Fg = Vector(0, 0)
         self.F_g = Vector(0, 0 * self.mass * -25000)
+        self.F_external = Vector(0, 0)
         self.torque = 0
         
         self.collision = collision

@@ -1,6 +1,7 @@
 from math import atan, pi, cos, sin
 from pygame import draw
 from itertools import combinations
+from operator import attrgetter
 
 mesh_color = (100, 200, 100)
 
@@ -134,3 +135,26 @@ def PairObjectList(objects):
         n.append(i)
     
     return n
+
+
+def active(list1):
+    sorted_list1 = sorted(list1, key=attrgetter("Pos.x"))
+
+    active_list = []
+
+    object_pairs = []
+
+    for i in sorted_list1:
+        object_pairs.append([i.Pos.x - i.radius, i.Pos.x + i.radius, i])
+
+
+    for i in object_pairs:
+        if object_pairs.index(i) != len(object_pairs) - 1:
+            if i[1] > object_pairs[object_pairs.index(i) + 1][0]:
+                active_list.append(i)
+                active_list.append(object_pairs[object_pairs.index(i) + 1])
+
+    print(active_list)
+
+    return active_list
+

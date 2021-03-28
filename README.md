@@ -12,7 +12,7 @@ gravity between objects <br />
 n-body simulation <br />
 
 
-note: many of the features haven't been added....yet
+note: some of the features haven't been added....yet
 
 and there are a few bugs
 

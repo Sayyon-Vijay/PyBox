@@ -2,7 +2,7 @@
 A 2D physics engine library in python for your games and for educational purposes etc. Rendered using pygame
 
 
-features:
+features: <br />
 rigid body dynamics :x: <br />
 simple harmonic motion (springs, pendulums, etc.) :x: <br />
 static, sliding and rotational friction :x: (no rotational friction) <br />

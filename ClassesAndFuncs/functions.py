@@ -109,6 +109,9 @@ def draw_circle(obj, win):
 
     draw.line(win, (100, 20, 30), circrot_coords1(obj), circrot_coords2(obj), 2)
 
+def draw_circ(obj_list, win):
+    for obj in obj_list:
+        draw_circle(obj, win)
 
 def draw_rect(obj, win):
     draw.rect(win, obj.color, (transform_x(obj.Pos.x), transform_y(obj.Pos.y), obj.width, obj.height))
@@ -137,8 +140,8 @@ def PairObjectList(objects):
     return n
 
 
-def active(list1):
-    sorted_list1 = sorted(list1, key=attrgetter("Pos.x"))
+def active(list1, axis):
+    sorted_list1 = sorted(list1, key=attrgetter(f"{axis}"))
 
     active_list = []
 
@@ -154,7 +157,8 @@ def active(list1):
                 active_list.append(i)
                 active_list.append(object_pairs[object_pairs.index(i) + 1])
 
-    print(active_list)
-
     return active_list
+
+    
+
 

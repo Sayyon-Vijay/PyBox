@@ -61,21 +61,20 @@ pyg.display.set_caption("PyBox")
 
 # __objects__
 # collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color, radius
-circ1 = Circle(True, False, 5, (0, 0), (0, 0), (0, 0), 0, 0, 0, (200, 20, 20), 20)
-circ2 = Circle(True, False, 5, (1450, 0), (0, 0), (0, 0), 0, 0, 0, (20, 20, 200), 20)
+circ1 = Circle(True, True, 5, (0, 100), (0, 0), (0, 0), 0, 0, 0, (20, 20, 20), 50)
+circ2 = Circle(True, True, 5, (1450, -100), (0, 0), (0, 0), 0, 0, 0, (20, 20, 200), 50)
+
+
+# obj_maker(10, 101, 20)
 
 
 def draw():
-    draw_circle(circ1, win)
-    draw_circle(circ2, win)
+    draw_circ(Objects.object_list, win)
 
     pyg.draw.rect(win, (100, 50, 0), (0, 890, 1500, 10))  # floor
     
     if user_input3 == "Y":
         coordinate_axes(win)
-
-
-list1 = PairObjectList(Objects.object_list)
 
 
 def main():
@@ -89,6 +88,7 @@ def main():
         # ___movements___
         movement(circ1, pyg.K_w, pyg.K_s, pyg.K_a, pyg.K_d, pyg.K_SPACE)
         movement(circ2, pyg.K_UP, pyg.K_DOWN, pyg.K_LEFT, pyg.K_RIGHT, pyg.K_LSHIFT)
+        # move(Objects.object_list)
         # print((circ.Pos.x, circ.Pos.y))
 
         win.fill((0, 0, 0))
@@ -97,14 +97,13 @@ def main():
 
 
         # ___boundaries___
-        boundary(circ1)
-        boundary(circ2)
+        boundary(Objects.object_list)
 
         # ___collisions___
         circ_collision(Objects.object_list)
 
         # ___gravity___
-        gravity(list1)
+        gravity(PairObjectList(Objects.object_list))
 
         # ___friction___
 
@@ -121,8 +120,14 @@ def main():
     pyg.quit()
 
 
-# this (__name__) line of code is useful because now people can use this physics engine for making games or something
+# this (__name__) line of code is useful because now people can use this physics engine for making games or use it as a game
 if __name__ == "__main__":
     main()
+
+""" Thanos: "*Stark...*"
+
+Tony: "You know me?"
+
+Thanos: "You're not the only one cursed with knowledge" """
 
 

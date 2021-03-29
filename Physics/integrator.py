@@ -12,61 +12,45 @@ def movement(obj, up, down, left, right, extra):
     global resultant_Force
     keys = key.get_pressed()
 
-    if isinstance(obj, Polygon):
-        if obj.n >= 3:
-            obj.Acc.x = 0
-            obj.Acc.y = 0
+    obj.Acc.x = 0
+    obj.Acc.y = 0
 
-            if keys[left]:
-                obj.F_move.x = -50
+    if keys[left]:
+        obj.F_move.x = -Fm.x
 
-            if keys[right]:
-                obj.F_move.x = 50
+    if keys[right]:
+        obj.F_move.x = Fm.x
 
-            if keys[up]:
-                obj.F_move.y = 100
+    if keys[up]:
+        obj.F_move.y = Fm.y
 
-            if keys[down]:
-                obj.F_move.y = -100
+    if keys[down]:
+        obj.F_move.y = -Fm.y
 
-            if keys[extra]:
-                obj.Vel.y = 85
-                obj.Vel.x = 80
+    if keys[extra]:
+        obj.Vel.y = 4500 * 0
+        obj.Vel.x = 3000 * 0
 
-            resultant_Force = obj.Fg + obj.F_move + F_drag + F_external + obj.F_g  # getting the resultant force
+    resultant_Force = obj.Fg + obj.F_move + obj.F_g + F_drag + obj.F_external  # getting the resultant force
 
-            obj.Acc += resultant_Force * (1 / obj.mass)  # getting acceleration from force
+    obj.Acc = resultant_Force * (1 / obj.mass)  # getting acceleration from force
 
-            obj.Vel += obj.Acc  # getting velocity from acceleration
+    obj.Vel += obj.Acc * dt  # getting velocity from acceleration
 
-            obj.Pos += obj.Vel  # getting position from velocity
+    obj.Pos += obj.Vel * dt  # getting position from velocity
 
-            obj.F_move.x = 0
-            obj.F_move.y = 0
+    obj.F_move.x = 0
+    obj.F_move.y = 0
 
-        else:
-            obj.Pos.x = 10000
-            obj.Pos.y = 10000
 
-    else:
+def move(obj_list):
+    global resultant_Force
+
+    for obj in obj_list:
+        keys = key.get_pressed()
+
         obj.Acc.x = 0
         obj.Acc.y = 0
-
-        if keys[left]:
-            obj.F_move.x = -Fm.x
-
-        if keys[right]:
-            obj.F_move.x = Fm.x
-
-        if keys[up]:
-            obj.F_move.y = Fm.y
-
-        if keys[down]:
-            obj.F_move.y = -Fm.y
-
-        if keys[extra]:
-            obj.Vel.y = 4500 * 0
-            obj.Vel.x = 3000 * 0
 
         resultant_Force = obj.Fg + obj.F_move + obj.F_g + F_drag + obj.F_external  # getting the resultant force
 
@@ -81,33 +65,34 @@ def movement(obj, up, down, left, right, extra):
 
 
 # This function makes sure that the object doesn't go outside the boundaries
-def boundary(obj):
-    if isinstance(obj, Circle):
-        if obj.Pos.x < -750 + obj.radius or obj.Pos.x > 750 - obj.radius:
-            obj.Pos.x = max(-750 + obj.radius, min(750 - obj.radius, obj.Pos.x))
-            obj.Vel.x = 0
-
-        if obj.Pos.y < (-450 + ground_height + obj.radius) or obj.Pos.y > 450 - obj.radius:
-            obj.Pos.y = max((-450 + ground_height + obj.radius), min(450 - obj.radius, obj.Pos.y))
-            obj.Vel.y = 0
-    else:
-        if obj.n >= 3:
-            x_coords, y_coords = list(zip(*obj.points))[0], list(zip(*obj.points))[1]
-            max_x = max(x_coords) + obj.Pos.x
-            min_x = min(x_coords) + obj.Pos.x
-            if max_x > display_size[0] / 2 or min_x < -display_size[0] / 2:
-                obj.Pos.x = max(-(display_size[0] / 2 - (obj.Pos.x - min_x)),
-                                min((display_size[0] / 2 - (max_x - obj.Pos.x)), obj.Pos.x))
+def boundary(obj_list):
+    for obj in obj_list:
+        if isinstance(obj, Circle):
+            if obj.Pos.x < -750 + obj.radius or obj.Pos.x > 750 - obj.radius:
+                obj.Pos.x = max(-750 + obj.radius, min(750 - obj.radius, obj.Pos.x))
                 obj.Vel.x = 0
 
-            max_y = max(y_coords) + obj.Pos.y
-            min_y = min(y_coords) + obj.Pos.y
-            if max_y > display_size[1] / 2 or min_y < -(display_size[1] / 2 - ground_height):
-                obj.Pos.y = max(-(display_size[1] / 2 - ground_height - (obj.Pos.y - min_y)),
-                                min(display_size[1] / 2 - (max_y - obj.Pos.y), obj.Pos.y))
+            if obj.Pos.y < (-450 + ground_height + obj.radius) or obj.Pos.y > 450 - obj.radius:
+                obj.Pos.y = max((-450 + ground_height + obj.radius), min(450 - obj.radius, obj.Pos.y))
                 obj.Vel.y = 0
         else:
-            pass
+            if obj.n >= 3:
+                x_coords, y_coords = list(zip(*obj.points))[0], list(zip(*obj.points))[1]
+                max_x = max(x_coords) + obj.Pos.x
+                min_x = min(x_coords) + obj.Pos.x
+                if max_x > display_size[0] / 2 or min_x < -display_size[0] / 2:
+                    obj.Pos.x = max(-(display_size[0] / 2 - (obj.Pos.x - min_x)),
+                                    min((display_size[0] / 2 - (max_x - obj.Pos.x)), obj.Pos.x))
+                    obj.Vel.x = 0
+
+                max_y = max(y_coords) + obj.Pos.y
+                min_y = min(y_coords) + obj.Pos.y
+                if max_y > display_size[1] / 2 or min_y < -(display_size[1] / 2 - ground_height):
+                    obj.Pos.y = max(-(display_size[1] / 2 - ground_height - (obj.Pos.y - min_y)),
+                                    min(display_size[1] / 2 - (max_y - obj.Pos.y), obj.Pos.y))
+                    obj.Vel.y = 0
+            else:
+                pass
 
 
 def rect_boundary(obj):
@@ -196,12 +181,19 @@ def circle_rotation(obj, clock, counter):
 def circ_collision(objects):
 
     # Broad phase collision detection
-    list1 = active(objects)
+    active_x = active(objects, "Pos.x")
+    active_y = active(objects, "Pos.y")
+
+    active_list = []
+
+    for i in active_x:
+        if i in active_x and i in active_y:
+            active_list.append(i)
 
     # Narrow phase collision detection
-    for i in list1:
-        if list1.index(i) != len(list1) - 1:
-            obj2 = list1[list1.index(i) + 1][2]
+    for i in active_list:
+        if active_list.index(i) != len(active_list) - 1:
+            obj2 = active_list[active_list.index(i) + 1][2]
 
             if i[2].collision and obj2.collision:
                 radius1 = i[2].radius

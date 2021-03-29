@@ -124,3 +124,9 @@ class Rectangle(Objects):
         self.width = width
         self.height = height
         self.moment_inertia = (self.mass * (self.width ** 2 + self.height ** 2)) / 12
+
+
+def obj_maker(n, x, y):
+    for i in range(n):
+        Circle(True, False, 5, (-400 + i*x, 0), (0, 0), (0, 0), 0, 0, 0, (30 + (1/5) * i*x, 20 + (1/5) * i*y, 20 + i), 50)
+        print(-400 + i*x)

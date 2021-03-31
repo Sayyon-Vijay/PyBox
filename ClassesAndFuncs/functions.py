@@ -1,10 +1,11 @@
 from math import atan, pi, cos, sin
-from pygame import draw
+from pygame import draw, mouse
 from itertools import combinations
 from operator import attrgetter
+import json
 
 mesh_color = (100, 200, 100)
-
+get = True
 
 def neg(x):
     if x < 0:
@@ -158,6 +159,47 @@ def active(list1, axis):
                 active_list.append(object_pairs[object_pairs.index(i) + 1])
 
     return active_list
+
+
+def save(cls):
+    global get
+    mouse_get = mouse.get_pressed()[2]
+    
+    if mouse_get and get:
+        usr = input("Do you want to save?(Y/N) :- ")
+
+        if usr.upper() == "Y":
+            file_name = input("Enter save file name: ")
+
+            data = {"object_list": []}
+
+            for i in cls.object_list:
+                a = {"ctrl": i.ctrl, "collision": i.collision, "gravity": i.gravity, "mass": i.mass, "coords_tuple": [i.Pos.x, i.Pos.y],
+                    "vel_tuple": [i.Vel.x, i.Vel.y], "acc_tuple": [i.Acc.x, i.Acc.y], "theta": i.theta,
+                    "omega": i.omega, "alpha": i.alpha, "color": i.color, "radius": i.radius}
+
+                data["object_list"].append(a)
+
+            with open(f"E:\my_python\pythonprojects\PyBox\saves\{file_name}", "w") as jsn:
+                json.dump(data, jsn, indent=2)
+
+            get = False
+
+
+def load(cls):
+    file_name = input("Enter file name to load it: ")
+
+    with open(f"E:\my_python\pythonprojects\PyBox\saves\{file_name}") as jsn:
+        data = json.load(jsn)
+
+    for attr in data["object_list"]:
+        cls(attr["ctrl"], attr["collision"], attr["gravity"], attr["mass"], attr["coords_tuple"],
+            attr["vel_tuple"], attr["acc_tuple"], attr["theta"], attr["omega"], attr["alpha"],
+            attr["color"], attr["radius"])
+
+
+
+
 
     
 

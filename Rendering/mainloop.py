@@ -60,13 +60,16 @@ pyg.display.set_caption("PyBox")
 # mouse
 
 # __objects__
-# collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color, radius
-circ1 = Circle(True, True, 5, (0, 100), (0, 0), (0, 0), 0, 0, 0, (20, 20, 20), 50)
-circ2 = Circle(True, True, 5, (1450, -100), (0, 0), (0, 0), 0, 0, 0, (20, 20, 200), 50)
+load(Circle)
+
+# ctrl, collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color, radius
+circ1 = Circle(True, True, True, 5, (0, 100), (0, 0), (0, 0), 0, 0, 0, (20, 20, 20), 50)
+circ2 = Circle(True, True, True, 5, (1450, -100), (0, 0), (0, 0), 0, 0, 0, (20, 20, 200), 50)
 
 
 # obj_maker(10, 101, 20)
 
+print(Objects.object_list)
 
 def draw():
     draw_circ(Objects.object_list, win)
@@ -79,6 +82,7 @@ def draw():
 
 def main():
     global mainloop
+
     # game loop
     while mainloop:
         for event in pyg.event.get():
@@ -88,7 +92,7 @@ def main():
         # ___movements___
         movement(circ1, pyg.K_w, pyg.K_s, pyg.K_a, pyg.K_d, pyg.K_SPACE)
         movement(circ2, pyg.K_UP, pyg.K_DOWN, pyg.K_LEFT, pyg.K_RIGHT, pyg.K_LSHIFT)
-        # move(Objects.object_list)
+        move(Objects.object_list)
         # print((circ.Pos.x, circ.Pos.y))
 
         win.fill((0, 0, 0))
@@ -111,6 +115,9 @@ def main():
         # ___object animation___
         draw()
 
+        # ___other___
+        save(Circle)
+
         # ___logging___
         if show_vectors_log:
             disp_vec_log()
@@ -124,10 +131,5 @@ def main():
 if __name__ == "__main__":
     main()
 
-""" Thanos: "*Stark...*"
-
-Tony: "You know me?"
-
-Thanos: "You're not the only one cursed with knowledge" """
 
 

@@ -51,7 +51,7 @@ class Objects:
     object_list = []
     number_of_objects = len(object_list)
 
-    def __init__(self, collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color):
+    def __init__(self, ctrl, collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color):
         self.mass = mass
         self.color = color
 
@@ -73,6 +73,7 @@ class Objects:
         self.gravity = gravity
 
         self.inside = False
+        self.ctrl = ctrl
         Objects.object_list.append(self)
 
     @staticmethod
@@ -84,15 +85,15 @@ class Objects:
 
 
 class Circle(Objects):
-    def __init__(self, collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color, radius):
-        super().__init__(collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color)
+    def __init__(self, ctrl, collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color, radius):
+        super().__init__(ctrl, collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color)
         self.radius = radius
         self.moment_inertia = (self.mass * (self.radius ** 2)) / 2
 
 
 class Polygon(Objects):
-    def __init__(self, collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color, n, radius):
-        super().__init__(collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color)
+    def __init__(self, ctrl, collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color, n, radius):
+        super().__init__(ctrl, collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color)
         self.n = n
         self.delta = 2*pi/n
         self.radius = radius
@@ -119,8 +120,8 @@ class Polygon(Objects):
 
 
 class Rectangle(Objects):
-    def __init__(self, collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color, width, height):
-        super().__init__(collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color)
+    def __init__(self, ctrl, collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color, width, height):
+        super().__init__(ctrl, collision, gravity, mass, coords_tuple, vel_tuple, acc_tuple, theta, omega, alpha, color)
         self.width = width
         self.height = height
         self.moment_inertia = (self.mass * (self.width ** 2 + self.height ** 2)) / 12

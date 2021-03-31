@@ -47,21 +47,22 @@ def move(obj_list):
     global resultant_Force
 
     for obj in obj_list:
-        keys = key.get_pressed()
+        if not obj.ctrl:
+            keys = key.get_pressed()
 
-        obj.Acc.x = 0
-        obj.Acc.y = 0
+            obj.Acc.x = 0
+            obj.Acc.y = 0
 
-        resultant_Force = obj.Fg + obj.F_move + obj.F_g + F_drag + obj.F_external  # getting the resultant force
+            resultant_Force = obj.Fg + obj.F_move + obj.F_g + F_drag + obj.F_external  # getting the resultant force
 
-        obj.Acc = resultant_Force * (1 / obj.mass)  # getting acceleration from force
+            obj.Acc = resultant_Force * (1 / obj.mass)  # getting acceleration from force
 
-        obj.Vel += obj.Acc * dt  # getting velocity from acceleration
+            obj.Vel += obj.Acc * dt  # getting velocity from acceleration
 
-        obj.Pos += obj.Vel * dt  # getting position from velocity
+            obj.Pos += obj.Vel * dt  # getting position from velocity
 
-        obj.F_move.x = 0
-        obj.F_move.y = 0
+            obj.F_move.x = 0
+            obj.F_move.y = 0
 
 
 # This function makes sure that the object doesn't go outside the boundaries
